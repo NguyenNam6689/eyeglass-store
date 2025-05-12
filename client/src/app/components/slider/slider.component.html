@@ -1,0 +1,33 @@
+<div class="navigation-wrapper">
+  <div
+    class="keen-slider keen-slider--vertical rounded-[20px] aspect-[3.5/1]"
+    #sliderRef
+  >
+    <div *ngFor="let slideSrc of slides" class="keen-slider__slide">
+      <img class="w-full h-full object-cover" [src]="slideSrc" />
+    </div>
+  </div>
+  <button class="arrow arrow--left" (click)="slider!.prev()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"
+      />
+    </svg>
+  </button>
+
+  <button class="arrow arrow--right" (click)="slider!.next()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
+    </svg>
+  </button>
+</div>
+<div class="slider-headers">
+  <button
+    (click)="slider!.moveToIdx(i)"
+    class="slider-header-button"
+    *ngFor="let text of sliderHeaders; let i = index"
+    [class]="i === currentSlide ? 'button-active' : ''"
+  >
+    {{ text }}
+  </button>
+</div>

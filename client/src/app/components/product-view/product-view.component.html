@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-3 cursor-pointer sm:text-base text-sm">
+  <div class="w-full h-auto aspect-square bg-[#eff1f6] rounded-[5px]">
+    <img
+      [src]="imageUrl || '../../../assets/images/lazy-image.svg'"
+      class="w-full h-full rounded-[5px]"
+      alt="Cover-Image"
+      id="cover-img"
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <span *ngIf="isBestSeller" class="text-[#9e3500] font-medium"
+      >Bestseller</span
+    >
+    <span class="font-medium">{{ name }}</span>
+    <span class="text-[#505050]">{{ shortDes }}</span>
+    <div class="flex gap-2">
+      <span *ngIf="!discountPrice" class="font-medium">{{ price }} €</span>
+      <span *ngIf="discountPrice" class="font-medium"
+        >{{ discountPrice }} €</span
+      >
+      <span
+        *ngIf="discountPrice"
+        class="font-medium text-[#505050] line-through"
+        >{{ price }} €</span
+      >
+    </div>
+    <div *ngIf="!isBestSeller" class="h-6 w-full"></div>
+  </div>
+</div>

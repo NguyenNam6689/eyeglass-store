@@ -1,27 +1,71 @@
-# Client
+# E-Commerce platform
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
+## About
 
-## Development server
+Real-time E-commerce web application, inspired by the Nike store. Through this project, I wanted to better understand Frontend-Backend communication using REST API and connect asynchronous data with UI. The application allows the user to experience the full purchasing process - from browsing products to placing an order.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Key Features
 
-## Code scaffolding
+- Token-based user authentication
+- Fetching and displaying product data stored in the cloud NoSQL database.
+- Displaying selected product categories
+- Sorting products
+- Adding new products to the store using the administration panel.
+- Adding items to cart.
+- Adding items to favorites.
+- Simulation of the product ordering process, including a summary, selection of payment method and delivery address.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## User Interface
+![home](https://github.com/user-attachments/assets/c12cf253-c4de-4096-a5bc-c70221ba308c)
+![product](https://github.com/user-attachments/assets/d7d30d07-80c1-464f-8e58-917ad099b4c0)
+![cart](https://github.com/user-attachments/assets/853dca67-9117-4bcb-b9e4-f0a6a8475cb9)
+![data](https://github.com/user-attachments/assets/70aa1f90-b4a4-4ffa-9e49-91de25ee0304)
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Technology Stack
 
-## Running unit tests
+[Angular 🔗](https://angular.io)<br>
+[TypeScript 🔗](https://typescriptlang.org)<br>
+[RxJS 🔗](https://rxjs.dev)<br>
+[Firebase Cloud Services 🔗](https://firebase.google.com)<br>
+[Angular Fire 🔗](https://github.com/angular/angularfire)<br>
+[Sass 🔗](https://sass-lang.com)<br>
+[TailwindCSS 🔗](https://tailwindcss.com)<br>
+[Keen-Slider 🔗](https://keen-slider.io)<br>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Login Details
 
-## Running end-to-end tests
+An example user created for the live version:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Email: user@test.com <br>
+Password: User_0
 
-## Further help
+## Installation Guide ⚙️
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Here's a step-by-step guide to help you get started with the project.
+
+### Prerequisites
+
+Before you begin, make sure you have the following installed on your machine:
+
+- Node.js (version 18.0 or later)
+- npm package manager (version 8.0 or later)
+
+### Installation
+
+Let's start with installing all dependencies. Move to the app main workspace and run:
+
+    npm i
+
+To create a localhost port you should type:
+
+    ng serve
+
+Your application is ready at port 4200.
+
+    http://localhost:4200/
+
+## License and Copyrights 📜
+
+- All products in the store are created for presentation purposes and do not constitute a sales offer
+- Product photos were created by me for this project

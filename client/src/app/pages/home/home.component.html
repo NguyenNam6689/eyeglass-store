@@ -1,0 +1,21 @@
+<div class="py-6 md:px-12 px-3">
+  <app-slider></app-slider>
+
+  <div class="flex flex-col gap-10 my-10">
+    <div class="home-section">
+      <app-product-carousel
+        [fetchedProducts]="itemsOnSale | async"
+        [header]="'Sale'"
+      ></app-product-carousel>
+    </div>
+
+    <div class="flex flex-col gap-10 my-10">
+      <div class="home-section">
+        <app-product-carousel
+          [fetchedProducts]="bestSellers | async"
+          [header]="'Bestsellers'"
+        ></app-product-carousel>
+      </div>
+    </div>
+  </div>
+</div>

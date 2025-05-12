@@ -1,13 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { InitialPopupService } from './services/initial-popup.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent implements OnInit {
+  isPopupVisible = false;
+
+  constructor(
+    private authService: AuthService,
+    private initialPopupService: InitialPopupService
+  ) {}
+
+  ngOnInit(): void {
+    this.authService.autoLogin();
+    this.initialPopupService.initValue();
+    this.isPopupVisible = this.initialPopupService.getState();
+  }
 }
