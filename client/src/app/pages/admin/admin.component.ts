@@ -48,13 +48,13 @@ export class AdminComponent {
 
   setCategories(forValue: string) {
     if (forValue === 'men') {
-      this.categories = ['shoes', 'bottoms', 'tops', 'jackets'];
+      this.categories = ['sunglasses', 'prescription', 'specialized', 'safety'];
       return;
     } else if (forValue === 'women') {
-      this.categories = ['shoes', 'tops', 'leggings', 'jackets'];
+      this.categories = ['sunglasses', 'fashion', 'safety', 'lenses'];
       return;
     } else if (forValue === 'kids') {
-      this.categories = ['sets', 'shoes', 'bottoms', 'tops', 'jackets'];
+      this.categories = ['sunglasses', 'prescription', 'specialized', 'safety'];
       return;
     }
   }

@@ -22,12 +22,12 @@ export class RedirectGuard implements CanActivate {
       (segments[2] === 'women' ||
         segments[2] === 'men' ||
         segments[2] === 'kids') &&
-      (segments[3] === 'shoes' ||
-        segments[3] === 'tops' ||
-        segments[3] === 'leggings' ||
-        segments[3] === 'jackets' ||
-        segments[3] === 'bottoms' ||
-        segments[3] === 'sets')
+      (segments[3] === 'sunglasses' ||
+        segments[3] === 'prescription' ||
+        segments[3] === 'specialized' ||
+        segments[3] === 'safety' ||
+        segments[3] === 'fashion' ||
+        segments[3] === 'lenses')
     ) {
       return true;
     } else {
