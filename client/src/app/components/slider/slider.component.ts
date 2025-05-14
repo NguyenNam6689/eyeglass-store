@@ -26,7 +26,7 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
     'See our new products',
   ];
   slides: string[] = [
-    '../../../assets/images/slider/winterSale.jpg',
+    '../../../assets/images/slider/web-clear-edit24.webp',
     '../../../assets/images/slider/charity.jpg',
     '../../../assets/images/slider/55.png',
     '../../../assets/images/slider/new.png',

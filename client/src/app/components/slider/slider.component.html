@@ -3,9 +3,16 @@
     class="keen-slider keen-slider--vertical rounded-[20px] aspect-[3.5/1]"
     #sliderRef
   >
-    <div *ngFor="let slideSrc of slides" class="keen-slider__slide">
-      <img class="w-full h-full object-cover" [src]="slideSrc" />
-    </div>
+   <div *ngFor="let slideSrc of slides" class="keen-slider__slide">
+  <div class="relative w-full aspect-[1723/485]">
+    <img
+      class="absolute inset-0 w-full h-full object-cover"
+      [src]="slideSrc"
+      alt="Slide"
+    />
+  </div>
+</div>
+
   </div>
   <button class="arrow arrow--left" (click)="slider!.prev()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
