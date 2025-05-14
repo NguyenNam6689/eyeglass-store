@@ -28,8 +28,8 @@ export class SliderComponent implements AfterViewInit, OnDestroy {
   slides: string[] = [
     '../../../assets/images/slider/web-clear-edit24.webp',
     '../../../assets/images/slider/charity.jpg',
-    '../../../assets/images/slider/55.png',
-    '../../../assets/images/slider/new.png',
+    '../../../assets/images/slider/WEB-BANNER-1-switch-new.webp',
+    '../../../assets/images/slider/lens_replacement.jpg',
   ];
   dotHelper: number[] = [];
   slider: KeenSliderInstance | undefined;
