@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { PaymentMethodService } from 'src/app/services/payment-method.service';
+import { InvoiceService } from '../../services/invoice.service';
 import { CartItem } from '../../models/cart-item';
 import { deliveryData } from '../../models/delivery-data.model';
 
@@ -38,6 +39,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cartService: CartService,
+    private invoiceService: InvoiceService,
     public paymentMethodService: PaymentMethodService
   ) {
     this.deliveryForm = this.fb.group({
@@ -76,9 +78,23 @@ export class CheckoutComponent implements OnInit {
     return JSON.parse(localStorage.getItem('deliveryData') || '{}');
   }
 
-  onConfirm() {
-    this.thirdStepPassed = true;
-    this.cartService.clearCart();
-    localStorage.removeItem('deliveryData');
+  async onConfirm() {
+    try {
+      // Create invoice
+      await this.invoiceService.createInvoice(
+        this.cartItems,
+        this.deliveryData,
+        this.totalPrice,
+        this.shipping,
+        this.paymentMethodService.paymentMethod
+      );
+
+      this.thirdStepPassed = true;
+      this.cartService.clearCart();
+      localStorage.removeItem('deliveryData');
+    } catch (error) {
+      console.error('Error creating invoice:', error);
+      alert('Error processing order. Please try again.');
+    }
   }
 }

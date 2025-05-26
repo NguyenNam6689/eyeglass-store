@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collectionData } from '@angular/fire/firestore';
-import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, writeBatch } from 'firebase/firestore';
 import {
   Storage,
   ref,
@@ -102,4 +102,49 @@ export class DatabaseService {
     const newFileName = ID + '.' + format;
     return newFileName;
   }
+
+  async updateProduct(id: string, item: Item): Promise<void> {
+    const docRef = doc(this.firestore, 'products', id);
+    await setDoc(docRef, item);
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    const docRef = doc(this.firestore, 'products', id);
+    await deleteDoc(docRef);
+  }
+
+  async deleteMultipleProducts(ids: string[]): Promise<void> {
+    const batch = writeBatch(this.firestore);
+    ids.forEach(id => {
+      const docRef = doc(this.firestore, 'products', id);
+      batch.delete(docRef);
+    });
+    await batch.commit();
+  }
+
+  // Invoice methods
+  getInvoices() {
+    const CollectionRef = collection(this.firestore, 'invoices') as any;
+    return collectionData<any>(CollectionRef);
+  }
+
+  async addInvoice(invoice: any): Promise<string> {
+    const CollectionRef = collection(this.firestore, 'invoices') as any;
+    let ID = '';
+    await addDoc(CollectionRef, invoice).then((docRef) => {
+      ID = docRef.id;
+    });
+    return ID;
+  }
+
+  async updateInvoice(id: string, invoice: any): Promise<void> {
+    const docRef = doc(this.firestore, 'invoices', id);
+    await setDoc(docRef, invoice);
+  }
+
+  async deleteInvoice(id: string): Promise<void> {
+    const docRef = doc(this.firestore, 'invoices', id);
+    await deleteDoc(docRef);
+  }
+
 }

@@ -38,6 +38,8 @@ import { LoginComponent } from './components/login/login.component';
 import { ProductAddedComponent } from './components/product-added/product-added.component';
 import { FavoritesAddedComponent } from './components/favorites-added/favorites-added.component';
 import { PopupComponent } from './components/popup/popup.component';
+import { ProductManagementComponent } from './components/product-manage/product-manage.component';
+import { InvoiceManagementComponent } from './components/invoice-manage/invoice-manage.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { PopupComponent } from './components/popup/popup.component';
     ProductAddedComponent,
     FavoritesAddedComponent,
     PopupComponent,
+    ProductManagementComponent,
+    InvoiceManagementComponent,
   ],
   imports: [
     BrowserModule,

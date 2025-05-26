@@ -13,6 +13,7 @@ import {
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent {
+  activeTab = 'products';
   form: FormGroup;
   image: any;
   imageName: string | null = null;
@@ -84,6 +85,7 @@ export class AdminComponent {
     this.databaseService.setProductData(user, this.image);
     this.form.reset();
     this.image = null;
+    this.imageName = null;
     this.showError = false;
     alert('Product added successfully');
   }

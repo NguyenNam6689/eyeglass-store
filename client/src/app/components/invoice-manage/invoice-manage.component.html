@@ -1,0 +1,216 @@
+<div class="invoice-management">
+  <div class="header">
+    <h2>Invoice Management</h2>
+    <div class="actions">
+      <button (click)="exportToExcel()" class="btn btn-success">
+        Export to Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Search:</label>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Order number, customer name, email..."
+          class="filter-input">
+      </div>
+
+      <div class="filter-group">
+        <label>Status:</label>
+        <select [(ngModel)]="statusFilter" (change)="onSearch()" class="filter-select">
+          <option *ngFor="let status of statusOptions" [value]="status.value">
+            {{status.label}}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>From Date:</label>
+        <input
+          type="date"
+          [(ngModel)]="dateFromFilter"
+          (change)="onSearch()"
+          class="filter-input">
+      </div>
+
+      <div class="filter-group">
+        <label>To Date:</label>
+        <input
+          type="date"
+          [(ngModel)]="dateToFilter"
+          (change)="onSearch()"
+          class="filter-input">
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoices Table -->
+  <div class="table-container">
+    <table class="invoices-table">
+      <thead>
+        <tr>
+          <th (click)="onSort('orderNumber')" class="sortable">
+            Order Number
+            <span class="sort-indicator" *ngIf="sortField === 'orderNumber'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th (click)="onSort('customerName')" class="sortable">
+            Customer
+            <span class="sort-indicator" *ngIf="sortField === 'customerName'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th (click)="onSort('totalAmount')" class="sortable">
+            Total Amount
+            <span class="sort-indicator" *ngIf="sortField === 'totalAmount'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th>Payment Method</th>
+          <th>Status</th>
+          <th (click)="onSort('createdAt')" class="sortable">
+            Created At
+            <span class="sort-indicator" *ngIf="sortField === 'createdAt'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of getPaginatedInvoices()">
+          <td class="order-number">{{invoice.orderNumber}}</td>
+          <td>
+            <div class="customer-info">
+              <div class="customer-name">{{invoice.customerName}}</div>
+              <div class="customer-email">{{invoice.customerEmail}}</div>
+            </div>
+          </td>
+          <td class="amount">{{invoice.totalAmount | currency:'EUR'}}</td>
+          <td class="payment-method">{{invoice.paymentMethod | titlecase}}</td>
+          <td>
+            <select
+              [value]="invoice.status"
+              (change)="onStatusChange(invoice.id, $event)"
+              [class]="getStatusClass(invoice.status)"
+              class="status-select">
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </td>
+          <td class="date">{{invoice.createdAt | date:'short'}}</td>
+          <td class="actions">
+            <button (click)="viewInvoiceDetails(invoice)" class="btn btn-primary btn-sm">
+              View
+            </button>
+            <button (click)="deleteInvoice(invoice.id)" class="btn btn-danger btn-sm">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="getTotalPages() > 1">
+    <button
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="btn btn-secondary">
+      Previous
+    </button>
+
+    <button
+      *ngFor="let page of getPageNumbers()"
+      (click)="goToPage(page)"
+      [class.active]="page === currentPage"
+      class="btn btn-secondary page-btn">
+      {{page}}
+    </button>
+
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === getTotalPages()"
+      class="btn btn-secondary">
+      Next
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    Loading invoices...
+  </div>
+
+  <!-- Invoice Details Modal -->
+  <div *ngIf="selectedInvoice" class="modal-overlay">
+    <div class="modal invoice-modal">
+      <div class="modal-header">
+        <h3>Invoice Details - {{selectedInvoice.orderNumber}}</h3>
+        <button (click)="closeInvoiceDetails()" class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="invoice-details">
+          <div class="detail-section">
+            <h4>Customer Information</h4>
+            <p><strong>Name:</strong> {{selectedInvoice.customerName}}</p>
+            <p><strong>Email:</strong> {{selectedInvoice.customerEmail}}</p>
+            <p><strong>Phone:</strong> {{selectedInvoice.customerPhone}}</p>
+            <p><strong>Address:</strong> {{selectedInvoice.deliveryAddress}}</p>
+          </div>
+
+          <div class="detail-section">
+            <h4>Order Information</h4>
+            <p><strong>Order Number:</strong> {{selectedInvoice.orderNumber}}</p>
+            <p><strong>Status:</strong> {{selectedInvoice.status | titlecase}}</p>
+            <p><strong>Payment Method:</strong> {{selectedInvoice.paymentMethod | titlecase}}</p>
+            <p><strong>Created:</strong> {{selectedInvoice.createdAt | date:'full'}}</p>
+          </div>
+
+          <div class="detail-section">
+            <h4>Items</h4>
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Size</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of selectedInvoice.items">
+                  <td>{{item.productName}}</td>
+                  <td>{{item.size}}</td>
+                  <td>{{item.quantity}}</td>
+                  <td>{{(item.discountPrice || item.price) | currency:'EUR'}}</td>
+                  <td>{{(item.discountPrice || item.price) * item.quantity | currency:'EUR'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="detail-section">
+            <h4>Summary</h4>
+            <div class="summary">
+              <p><strong>Shipping:</strong> {{selectedInvoice.shippingCost | currency:'EUR'}}</p>
+              <p><strong>Total Amount:</strong> {{selectedInvoice.totalAmount | currency:'EUR'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

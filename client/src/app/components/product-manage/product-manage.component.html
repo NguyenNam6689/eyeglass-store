@@ -1,0 +1,194 @@
+<div class="product-management">
+  <div class="header">
+    <h2>Product Management</h2>
+    <div class="actions">
+      <button
+        *ngIf="selectedProducts.size > 0"
+        (click)="confirmDelete()"
+        class="btn btn-danger">
+        Delete Selected ({{selectedProducts.size}})
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="filters">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Search products..."
+        class="search-input">
+    </div>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-container">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              [checked]="selectedProducts.size === getPaginatedProducts().length && getPaginatedProducts().length > 0"
+              (change)="toggleAllSelection()">
+          </th>
+          <th (click)="onSort('imageUrl')" class="sortable">Image</th>
+          <th (click)="onSort('name')" class="sortable">
+            Name
+            <span class="sort-indicator" *ngIf="sortField === 'name'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th (click)="onSort('category')" class="sortable">
+            Category
+            <span class="sort-indicator" *ngIf="sortField === 'category'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th (click)="onSort('for')" class="sortable">
+            For
+            <span class="sort-indicator" *ngIf="sortField === 'for'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th (click)="onSort('price')" class="sortable">
+            Price
+            <span class="sort-indicator" *ngIf="sortField === 'price'">
+              {{sortDirection === 'asc' ? '↑' : '↓'}}
+            </span>
+          </th>
+          <th>Discount Price</th>
+          <th>Best Seller</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of getPaginatedProducts()"
+            [class.editing]="editingProduct?.id === product.id">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="selectedProducts.has(product.id)"
+              (change)="toggleProductSelection(product.id)">
+          </td>
+          <td>
+            <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+          </td>
+          <td>
+            <input
+              *ngIf="editingProduct?.id === product.id; else nameDisplay"
+              [(ngModel)]="editingProduct!.name"
+              class="edit-input">
+            <ng-template #nameDisplay>{{product.name}}</ng-template>
+          </td>
+          <td>
+            <select
+              *ngIf="editingProduct?.id === product.id; else categoryDisplay"
+              [(ngModel)]="editingProduct!.category"
+              class="edit-select">
+              <option value="sunglasses">Sunglasses</option>
+              <option value="prescription">Prescription</option>
+              <option value="specialized">Specialized</option>
+              <option value="safety">Safety</option>
+              <option value="fashion">Fashion</option>
+              <option value="lenses">Lenses</option>
+            </select>
+            <ng-template #categoryDisplay>{{product.category}}</ng-template>
+          </td>
+          <td>
+            <select
+              *ngIf="editingProduct?.id === product.id; else forDisplay"
+              [(ngModel)]="editingProduct!.for"
+              class="edit-select">
+              <option value="women">Women</option>
+              <option value="men">Men</option>
+              <option value="kids">Kids</option>
+            </select>
+            <ng-template #forDisplay>{{product.for}}</ng-template>
+          </td>
+          <td>
+            <input
+              *ngIf="editingProduct?.id === product.id; else priceDisplay"
+              type="number"
+              [(ngModel)]="editingProduct!.price"
+              class="edit-input">
+            <ng-template #priceDisplay>{{product.price | currency:'EUR'}}</ng-template>
+          </td>
+          <td>
+            <input
+              *ngIf="editingProduct?.id === product.id; else discountDisplay"
+              type="number"
+              [(ngModel)]="editingProduct!.discountPrice"
+              class="edit-input">
+            <ng-template #discountDisplay>
+              {{product.discountPrice ? (product.discountPrice | currency:'EUR') : '-'}}
+            </ng-template>
+          </td>
+          <td>
+            <input
+              *ngIf="editingProduct?.id === product.id; else bestSellerDisplay"
+              type="checkbox"
+              [(ngModel)]="editingProduct!.isBestSeller">
+            <ng-template #bestSellerDisplay>
+              {{product.isBestSeller ? 'Yes' : 'No'}}
+            </ng-template>
+          </td>
+          <td class="actions">
+            <div *ngIf="editingProduct?.id === product.id; else normalActions">
+              <button (click)="saveProduct()" class="btn btn-success btn-sm">Save</button>
+              <button (click)="cancelEdit()" class="btn btn-secondary btn-sm">Cancel</button>
+            </div>
+            <ng-template #normalActions>
+              <button (click)="editProduct(product)" class="btn btn-primary btn-sm">Edit</button>
+              <button (click)="deleteProduct(product.id)" class="btn btn-danger btn-sm">Delete</button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="getTotalPages() > 1">
+    <button
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="btn btn-secondary">
+      Previous
+    </button>
+
+    <button
+      *ngFor="let page of getPageNumbers()"
+      (click)="goToPage(page)"
+      [class.active]="page === currentPage"
+      class="btn btn-secondary page-btn">
+      {{page}}
+    </button>
+
+    <button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === getTotalPages()"
+      class="btn btn-secondary">
+      Next
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    Loading products...
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div *ngIf="showDeleteConfirm" class="modal-overlay">
+    <div class="modal">
+      <h3>Confirm Delete</h3>
+      <p>Are you sure you want to delete {{selectedProducts.size}} selected product(s)?</p>
+      <div class="modal-actions">
+        <button (click)="deleteSelected()" class="btn btn-danger">Delete</button>
+        <button (click)="showDeleteConfirm = false" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

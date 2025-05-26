@@ -1,99 +1,142 @@
-<div class="w-full mx-auto max-w-[40rem] gap-16 p-6">
-  <form class="flex flex-col gap-3" [formGroup]="form" (submit)="onSubmit()">
-    <label for="name">Name</label>
-    <input
-      formControlName="name"
-      class="form-input"
-      type="text"
-      id="name"
-      placeholder="Enter product name"
-    />
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+  </div>
 
-    <label for="price">Price</label>
-    <input
-      formControlName="price"
-      class="form-input"
-      type="number"
-      id="price"
-      placeholder="Enter product price"
-    />
+  <div class="admin-tabs">
+    <button
+      [class.active]="activeTab === 'products'"
+      (click)="activeTab = 'products'"
+      class="tab-button">
+      Product Management
+    </button>
+    <button
+      [class.active]="activeTab === 'invoices'"
+      (click)="activeTab = 'invoices'"
+      class="tab-button">
+      Invoice Management
+    </button>
+    <button
+      [class.active]="activeTab === 'add-product'"
+      (click)="activeTab = 'add-product'"
+      class="tab-button">
+      Add New Product
+    </button>
+  </div>
 
-    <label for="for">For</label>
-    <select
-      formControlName="for"
-      class="form-select"
-      id="for"
-      name="selectedFor"
-      (change)="changeFor($event)"
-    >
-      <option *ngFor="let for of forOptions" [ngValue]="for">
-        {{ for }}
-      </option>
-    </select>
-
-    <label for="category" name="selectedCategory">Category</label>
-    <select
-      (change)="changeCategory($event)"
-      formControlName="category"
-      class="form-select"
-      id="category"
-    >
-      <option *ngFor="let category of categories" [ngValue]="category">
-        {{ category }}
-      </option>
-    </select>
-
-    <label for="shortDes">Short Description</label>
-    <textarea
-      formControlName="shortDes"
-      class="form-textarea form-input"
-      id="shortDes"
-      rows="3"
-    ></textarea>
-
-    <label for="image">Product Image</label>
-    <input
-      (input)="handleImage($event)"
-      formControlName="image"
-      type="file"
-      accept="image/png, image/jpeg, image/jpg, image/webp, image/gif, image/jiff"
-      class="form-control-file"
-      id="imageUpload"
-      hidden
-    />
-
-    <label for="imageUpload" class="upload-btn">
-      <svg
-        class="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-        ></path>
-      </svg>
-      Upload
-    </label>
-
-    <div class="flex flex-col gap-2">
-      <span> Uploaded image: </span>
-      <div class="text-[#707072]">
-        <span *ngIf="imageName">
-          {{ imageName }}
-        </span>
-        <span *ngIf="!imageName"> You don't upload any image yet! </span>
-      </div>
+  <div class="admin-content">
+    <!-- Product Management Tab -->
+    <div *ngIf="activeTab === 'products'" class="tab-content">
+      <app-product-manage></app-product-manage>
     </div>
 
-    <button type="submit" class="submit-btn">Add Product</button>
-    <span *ngIf="showError" class="text-[#ff5050] w-full text-center"
-      >Please complete all fields!</span
-    >
-  </form>
+    <!-- Invoice Management Tab -->
+    <div *ngIf="activeTab === 'invoices'" class="tab-content">
+      <app-invoice-manage></app-invoice-manage>
+    </div>
+
+    <!-- Add Product Tab -->
+    <div *ngIf="activeTab === 'add-product'" class="tab-content">
+      <div class="add-product-form">
+        <h2>Add New Product</h2>
+        <form class="flex flex-col gap-3" [formGroup]="form" (submit)="onSubmit()">
+          <label for="name">Name</label>
+          <input
+            formControlName="name"
+            class="form-input"
+            type="text"
+            id="name"
+            placeholder="Enter product name"
+          />
+
+          <label for="price">Price</label>
+          <input
+            formControlName="price"
+            class="form-input"
+            type="number"
+            id="price"
+            placeholder="Enter product price"
+          />
+
+          <label for="for">For</label>
+          <select
+            formControlName="for"
+            class="form-select"
+            id="for"
+            name="selectedFor"
+            (change)="changeFor($event)"
+          >
+            <option *ngFor="let for of forOptions" [ngValue]="for">
+              {{ for }}
+            </option>
+          </select>
+
+          <label for="category" name="selectedCategory">Category</label>
+          <select
+            (change)="changeCategory($event)"
+            formControlName="category"
+            class="form-select"
+            id="category"
+          >
+            <option *ngFor="let category of categories" [ngValue]="category">
+              {{ category }}
+            </option>
+          </select>
+
+          <label for="shortDes">Short Description</label>
+          <textarea
+            formControlName="shortDes"
+            class="form-textarea form-input"
+            id="shortDes"
+            rows="3"
+          ></textarea>
+
+          <label for="image">Product Image</label>
+          <input
+            (input)="handleImage($event)"
+            formControlName="image"
+            type="file"
+            accept="image/png, image/jpeg, image/jpg, image/webp, image/gif, image/jiff"
+            class="form-control-file"
+            id="imageUpload"
+            hidden
+          />
+
+          <label for="imageUpload" class="upload-btn">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+              ></path>
+            </svg>
+            Upload
+          </label>
+
+          <div class="flex flex-col gap-2">
+            <span> Uploaded image: </span>
+            <div class="text-[#707072]">
+              <span *ngIf="imageName">
+                {{ imageName }}
+              </span>
+              <span *ngIf="!imageName"> You don't upload any image yet! </span>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Add Product</button>
+          <span *ngIf="showError" class="text-[#ff5050] w-full text-center"
+            >Please complete all fields!</span
+          >
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
