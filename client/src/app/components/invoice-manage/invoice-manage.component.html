@@ -108,7 +108,7 @@
               <option value="cancelled">Cancelled</option>
             </select>
           </td>
-          <td class="date">{{invoice.createdAt | date:'short'}}</td>
+          <td class="date">{{invoice.createdAt | timestampToDate | date:'short'}}</td>
           <td class="actions">
             <button (click)="viewInvoiceDetails(invoice)" class="btn btn-primary btn-sm">
               View

@@ -40,6 +40,7 @@ import { FavoritesAddedComponent } from './components/favorites-added/favorites-
 import { PopupComponent } from './components/popup/popup.component';
 import { ProductManagementComponent } from './components/product-manage/product-manage.component';
 import { InvoiceManagementComponent } from './components/invoice-manage/invoice-manage.component';
+import { TimestampToDatePipe } from './pipes/timestamp-to-date.pipe';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { InvoiceManagementComponent } from './components/invoice-manage/invoice-
     PopupComponent,
     ProductManagementComponent,
     InvoiceManagementComponent,
+    TimestampToDatePipe,
   ],
   imports: [
     BrowserModule,
