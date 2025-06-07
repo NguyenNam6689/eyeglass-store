@@ -32,7 +32,9 @@ export class AdminComponent {
       shortDes: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
       for: new FormControl('', [Validators.required]),
-      image: new FormControl('', [Validators.required]),
+      imageUrl: new FormControl("", [Validators.required]),
+      discountPrice: new FormControl(""),
+      isBestSeller: new FormControl(false),
     });
   }
 
@@ -79,7 +81,9 @@ export class AdminComponent {
       category: this.form.get('category')?.value,
       shortDes: this.form.get('shortDes')?.value,
       sizes: this.addSizes(),
-      imageUrl: '',
+      imageUrl: this.form.get("imageUrl")?.value,
+      discountPrice: this.form.get("discountPrice")?.value ? Number(this.form.get("discountPrice")?.value) : undefined,
+      isBestSeller: this.form.get("isBestSeller")?.value || false,
     };
 
     this.databaseService.setProductData(user, this.image);
